@@ -21,7 +21,7 @@ const DynamicInput = ({ dynamicFields, setDynamicFields, label }) => {
   const addInputField = () => {
     setDynamicFields([...dynamicFields, { key: '', value: '' }]);
   };
-  console.log("dnya:",dynamicFields)
+  
   // Function to remove the last input field
   const removeInputField = () => {
     setDynamicFields(dynamicFields.slice(0, -1));

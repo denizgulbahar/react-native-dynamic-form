@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     scrollViewContent: {
         flexGrow: 1,  // Allow the ScrollView to grow vertically to fit its content.
-        padding: width>=500 ? 20 : 10,
+        padding: width >= 500 ? 20 : 10,
         paddingBottom: 50, 
     }
 }

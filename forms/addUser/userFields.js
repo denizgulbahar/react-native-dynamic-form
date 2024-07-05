@@ -37,7 +37,7 @@ const UserFields = ({ informations, handleChange, createDataFunction, dynamicTyp
         />
         <DynamicInput
           dynamicFields={informations[dynamicType]}
-          setDynamicFields={(value) => handleChange(dynamicType,value)}
+          setDynamicFields={(value) => handleChange(dynamicType, value)}
           label="Diğer Özellikler"
         />
         {/* Button to add user data */}

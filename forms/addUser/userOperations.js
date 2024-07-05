@@ -5,6 +5,8 @@ import { getInputFields } from '../../utilities/getInputFields';
 import listUserData from '../../API/user/get-users';
 import createUserData from '../../API/user/add-user';
 import showAlert from '../../utilities/showAlert';
+import { users } from '../../data/users';
+import { handleDynamicTransform } from '../../utilities/handleDynamicTransform';
 
 const UserOperations = ({ setModalVisible }) => {
  
@@ -12,47 +14,9 @@ const UserOperations = ({ setModalVisible }) => {
   const [isLoading, setLoading] = useState(false);
 
   // DynamicType was determined here
-  let dynamicType = "others";
+  const dynamicType = "others";
 
-  let users = [
-    {
-      name: "deniz", 
-      email: 'denizg@gmail.com',
-      password: '1234',
-      phone: "0502 293 12 34",
-      others: { 
-        bornDate: "01.07.1996", 
-        sex: "male", 
-        interest: "football"
-      },
-    },
-    {
-      name: 'ayse', 
-      email: 'ayse_k@hotmail.com',
-      password: '5678',
-      phone: "0505 487 56 78",
-      others: { 
-        bornDate: "15.03.1998", 
-        sex: "female",
-        interest: "music"
-      },
-    },
-    { 
-      name: 'ahmet', 
-      email: 'ahmet_y@yahoo.com',
-      password: 'abcd',
-      phone: "0501 123 45 67",
-      others: { 
-        bornDate: "22.11.1995", 
-        sex: "male",
-        interest: "basketball",
-        domesticAnimal: "cat"
-      }
-
-    }
-  ];
-  
-  //Used for Mock API call
+  // Used for Mock of User List API call
   function mockListAPIFunction(ms) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -60,7 +24,7 @@ const UserOperations = ({ setModalVisible }) => {
         }, ms);
     });
   }
-
+  // Used for Mock of Created User API call
   function mockCreateAPIFunction(ms) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -90,23 +54,6 @@ const UserOperations = ({ setModalVisible }) => {
       setLoading(false);
     }
   };
-  
-  const handleDynamicTransform = (informations) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const transformedObject = {};
-        // transformation of the Each key-value pair 
-        informations[dynamicType].forEach(({ key, value }) => {
-          if (key && value) {
-            transformedObject[key] = value;
-          }
-        });
-        resolve(transformedObject);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
 
   // Handle creating user data
   const handleCreateData = async (informations) => {
@@ -119,7 +66,7 @@ const UserOperations = ({ setModalVisible }) => {
       await mockCreateAPIFunction(500)
 
       // Transformation for Dynamic Fields of the User Informations
-      const transformedObject = await handleDynamicTransform(informations)
+      const transformedObject = await handleDynamicTransform(informations[dynamicType])
 
       // User information and show an alert
       console.log("createdUser: ",{...informations, [dynamicType]: transformedObject})

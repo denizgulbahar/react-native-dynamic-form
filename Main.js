@@ -11,9 +11,6 @@ export default function Main() {
             <StatusBar style="auto" />
             <Stack.Navigator
                 screenOptions={{
-                    cardStyle: {
-                        backgroundColor: color.blue,
-                    },
                     headerShown: false,
                 }}
             >
