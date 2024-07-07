@@ -3,14 +3,14 @@ import { color } from '../../styles/color';
 
 const { width } = Dimensions.get('window');
 
-const InputOriginal = ({ label, value, onChangeText, viewStyle, inputStyle, multiline, 
-  numberOfLines, placeholder, secureTextEntry, keyboardType }) => {
+const InputOriginal = ({ label, value, onChangeText, viewStyle, labelStyle, inputStyle, 
+  multiline, numberOfLines, placeholder, secureTextEntry, keyboardType }) => {
 
   return (
       <View style={[styles.col, viewStyle]}>
         {label ? (
           // If Input has label prop, display it in Text Component
-          <Text style={[styles.textInput, inputStyle]}>{label}</Text>
+          <Text style={[styles.label, labelStyle]}>{label}</Text>
         ) : false
         }
         <TextInput
@@ -28,23 +28,21 @@ const InputOriginal = ({ label, value, onChangeText, viewStyle, inputStyle, mult
   );
 };
 const styles = StyleSheet.create({
+  label: {
+    margin: 5,
+    textAlign: "left",
+    fontSize: width > 500 ? 22 : 18,
+  },
   textInput: {
-    marginLeft: 5,
-    paddingVertical: 0,
     outlineStyle: 'none',
     textAlign: "left",
     fontSize: width > 500 ? 22 : 18,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    padding: 15,
+    borderWidth: 1,
+    borderRadius: 10,
   },
   col: {
     flexDirection: 'column',
-    borderColor: color.black,
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 10,
   },
 })
 export default InputOriginal;

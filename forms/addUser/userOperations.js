@@ -70,6 +70,7 @@ const UserOperations = ({ setModalVisible }) => {
 
       // User information and show an alert
       console.log("createdUser: ",{...informations, [dynamicType]: transformedObject})
+      showAlert("Konsolda CreatedUser'ı aratarak eklenen kullanıcı bilgisine ulaşabilirsiniz.")
       showAlert("Kullanıcı Eklendi.")
       // Update list of users on the UI 
       // await listUserData();
@@ -118,7 +119,7 @@ const UserOperations = ({ setModalVisible }) => {
       showAlert('İsim ile şifre aynı olamaz');
       return false;
     } 
-    if(!isValidEmail) {
+    if(!isValidEmail(informations.email)) {
       showAlert('Lütfen geçerli bir email giriniz.');
       return false;
     }

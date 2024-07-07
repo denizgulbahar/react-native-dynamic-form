@@ -17,7 +17,7 @@ const UserFields = ({ informations, handleChange, createDataFunction, dynamicTyp
         viewStyle={styles.inputContainer}
         inputStyle={styles.input}
         value={informations[item]}
-        placeholder={item}
+        label={item}
         keyboardType={item === "phone" && "number" }
         secureTextEntry={item === "password" && true}
         onChangeText={(value) => handleChange(item, value)}
