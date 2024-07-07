@@ -3,8 +3,19 @@ import { color } from '../../styles/color';
 
 const { width } = Dimensions.get('window');
 
-const InputOriginal = ({ label, value, onChangeText, viewStyle, labelStyle, inputStyle, 
-  multiline, numberOfLines, placeholder, secureTextEntry, keyboardType }) => {
+const InputOriginal = ({ 
+  label, 
+  value, 
+  onChangeText, 
+  viewStyle, 
+  labelStyle, 
+  inputStyle, 
+  multiline, 
+  numberOfLines, 
+  placeholder, 
+  secureTextEntry, 
+  keyboardType 
+}) => {
 
   return (
       <View style={[styles.col, viewStyle]}>
