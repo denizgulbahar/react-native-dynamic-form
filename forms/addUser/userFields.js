@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import ButtonOriginal from '../../components/buttons/buttonOriginal';
 import DynamicInput from '../../components/input/dynamicInput';

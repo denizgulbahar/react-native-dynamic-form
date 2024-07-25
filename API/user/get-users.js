@@ -2,8 +2,8 @@ import Cookies from "js-cookie";
 import constants from "../../resources/constants";
 
 async function fetchUsers(token) {
-    const response = await fetch(`${constants.API_URL_USER}/get-users`, {
-        method: 'POST',
+    const response = await fetch(`${constants.API_URL_USER}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         },

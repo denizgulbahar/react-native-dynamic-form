@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 0,
     backgroundColor: color.white,
-    borderColor: color.orange,
     shadowColor: "#000000",
     shadowOffset: {
         width: 0,

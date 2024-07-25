@@ -3,7 +3,7 @@ import constants from "../../resources/constants";
 
 async function createUser(data) {
     try {
-        const response = await fetch(`${constants.API_URL_USER}/add-user`, {
+        const response = await fetch(`${constants.API_URL_USER}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

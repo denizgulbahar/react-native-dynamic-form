@@ -1,14 +1,19 @@
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { color } from '../../styles/color';
 
-const FullScreenLoading = ({ message }) => {
+const Loading = ({ 
+    message = "Veri yükleniyor...", // Default Value
+    containerStyle,
+    textStyle,  
+    loadingSize = 40 // Default Value
+}) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
             <ActivityIndicator 
-                size={40} 
+                size={loadingSize} 
                 color={color.black}
             />
-            <Text style={styles.message}>
+            <Text style={[styles.message, textStyle]}>
                 {message}
             </Text>
         </View>
@@ -31,4 +36,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FullScreenLoading;
+export default Loading;

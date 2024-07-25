@@ -1,79 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import FullScreenLoading from '../../components/loading/FullScreenLoading';
 import UserFields from './userFields';
 import { getInputFields } from '../../utilities/getInputFields';
 import listUserData from '../../API/user/get-users';
 import createUserData from '../../API/user/add-user';
 import showAlert from '../../utilities/showAlert';
-import { users } from '../../data/users';
 import { handleDynamicTransform } from '../../utilities/handleDynamicTransform';
 
-const UserOperations = ({ setModalVisible }) => {
+const UserOperations = ({ userData, setLoading, setModalVisible }) => {
  
   const [informations, setInformations] = useState({});
-  const [isLoading, setLoading] = useState(false);
-
+  
   // DynamicType was determined here
   const dynamicType = "others";
 
-  // Used for Mock of User List API call
-  function mockListAPIFunction(ms) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(users);  // return users
-        }, ms);
-    });
-  }
-  // Used for Mock of Created User API call
-  function mockCreateAPIFunction(ms) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-          resolve()
-        }, ms);
-    });
-  }
-
   // Fetch user data and fill inputs and informations
-  const handleUserData = async () => {
+  const handleInputData = () => {
     try {
-      // For real API call, use the following line
-      // const data = await listUserData();
-
-      // Fetch user data (mocked API call with a delay of 500ms)
-      const data = await mockListAPIFunction(500)
-
       // Create inputdata from user API data
-      const inputData = getInputFields(data);
+      const inputData = getInputFields(userData);
 
       // Create initial User Informations from inputdata
-      const initialInformations = Object.fromEntries(inputData.map(item =>  [item, ""]))
+      const initialInformations = Object.fromEntries(
+        inputData.map(item =>  [item, ""])
+      )
       setInformations(initialInformations);
     } catch (error) {
       console.error('Error handling user data:', error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   // Handle creating user data
   const handleCreateData = async (informations) => {
     setLoading(true)
     try {
-      // For real API call, use the following line
-      // await createUserData(informations);
-
-      // Created user data (mocked API call with a delay of 500ms)
-      await mockCreateAPIFunction(500)
+      // Make an API call to create a new user with the provided information
+      await createUserData({...informations, [dynamicType]: transformedObject});
 
       // Transformation for Dynamic Fields of the User Informations
       const transformedObject = await handleDynamicTransform(informations[dynamicType])
 
       // User information and show an alert
-      console.log("createdUser: ",{...informations, [dynamicType]: transformedObject})
-      showAlert("Konsolda CreatedUser'ı aratarak eklenen kullanıcı bilgisine ulaşabilirsiniz.")
       showAlert("Kullanıcı Eklendi.")
+
       // Update list of users on the UI 
-      // await listUserData();
+      await listUserData();
     } catch (error) {
       console.error('Error creating user data:', error);
     } finally {
@@ -133,18 +103,15 @@ const UserOperations = ({ setModalVisible }) => {
   }
 
   useEffect(() => {
-    setLoading(true)
-    handleUserData();
+    handleInputData();
   }, []);
 
   useEffect(() => {
     // Clean up function
     return () => setInformations({});
   }, []);
-
-  return isLoading ? (
-    <FullScreenLoading message="Veri yükleniyor, lütfen bekleyin..." />
-  ) : (
+  
+  return (
     <UserFields
       informations={informations}
       handleChange={handleChange}
