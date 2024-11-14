@@ -13,11 +13,6 @@ const width = Dimensions.get('window').width;
 
 const UserScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [userData, setUserData] = useState([])
-  const [isLoading, setLoading] = useState(false);
-
-  const handleOpenModal = () => setModalVisible(true);
-  const handleCloseModal = () => setModalVisible(false);
   // const mockData = [
   //   {
   //   "name":"Berkan Bulut",
@@ -38,8 +33,23 @@ const UserScreen = () => {
   //         "city": "Ankara",
   //         "birthDate":"01.07.1992"
   //     }
+  //   },
+  //   {
+  //     "name":"Berkansss Bulut",
+  //     "email": "berkan.bulut@gmail.com",
+  //     "phone": "05065122500",
+  //     "password":"berkan123",
+  //     "others": {
+  //         "city": "Ankara",
+  //         "birthDate":"01.07.1992"
   //     }
+  //   }
   // ]
+  const [userData, setUserData] = useState([])
+  const [isLoading, setLoading] = useState(false);
+
+  const handleOpenModal = () => setModalVisible(true);
+  const handleCloseModal = () => setModalVisible(false);
   const handleUserData = async () => {
     try {
       const data = await listUserData()
@@ -89,14 +99,16 @@ const UserScreen = () => {
           {/* Title of the screen */}
           <Text style={styles.title}>User Screen</Text>
           {/* FlatList component to display the list of users */}
-          <Text style={styles.addedUserTitle}>Last Added User</Text>
-          <FlatList
-            style={styles.itemContainer}
-            data={Object.keys(userData[userData.length - 1])} // Array of added last user data
-            keyExtractor={(item, index) => `${item}_${index}`} // Unique key for each item
-            renderItem={RenderItem} // Function to render each item
-            numColumns={width >= 500 ? 2 : 1} // Responsive Column
-          />
+
+          <View style={styles.lastUserContainer}>
+            <Text style={styles.lastUserTitle}>Last User Informations</Text>
+            <FlatList
+              data={Object.keys(userData[userData.length - 1])} // Array of added last user informations
+              keyExtractor={(item, index) => `${item}_${index}`} // Unique key for each item
+              renderItem={RenderItem} // Function to render each item
+              numColumns={width >= 500 ? 2 : 1} // Responsive Column
+            />
+          </View>
           
           {/* Button to open the modal for adding a new user */}
           <ButtonOriginal 
@@ -133,7 +145,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 50,
   },
-  itemContainer: {
+  lastUserTitle: {
+    margin: 20,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  lastUserContainer: {
     flex: 1,
     margin: 10,
     padding: 10,
@@ -144,11 +162,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: width >= 500 ? 22 : 18,
     padding: 7,
-  },
-  addedUserTitle: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   title: {
     textAlign: 'left',
