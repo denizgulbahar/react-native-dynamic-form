@@ -1,13 +1,11 @@
-import Cookies from "js-cookie";
 import constants from "../../resources/constants";
 
-async function fetchUsers(token) {
+async function fetchUsers() {
     const response = await fetch(`${constants.API_URL_USER}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ token })  // Use ES6 shorthand property name for { token: token }
+        }
     });
 
     if (!response.ok) {
@@ -18,14 +16,9 @@ async function fetchUsers(token) {
 }
 
 const listUserData = async () => {
-    const clientToken = Cookies.get('clientToken');
-
-    if (!clientToken) {
-        throw new Error('Client token is missing');
-    }
-
     try {
-        const data = await fetchUsers(clientToken);
+        const data = await fetchUsers();
+        console.log("dat:",data);
         return data;
     } catch (error) {
         console.error('Error fetching user data:', error);

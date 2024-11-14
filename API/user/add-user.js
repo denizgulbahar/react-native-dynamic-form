@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import constants from "../../resources/constants";
 
 async function createUser(data) {
@@ -24,35 +23,9 @@ async function createUser(data) {
 }
 
 const createUserData = async (informations) => {
-    const clientToken = Cookies.get('clientToken');
-    if (!clientToken) {
-        throw new Error('Client token is missing');
-    }
-    
-    // Get the current date and time in milliseconds
-    const currentDate = new Date().getTime()
 
-   // If backend expects the date as a string, use currentDate.toString()
-    const userData = {
-        ...informations,
-        createdAt: {
-            $date: {
-                $numberLong: currentDate
-            }
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: currentDate
-            }
-        }
-    };
-
-    const dataRaw = {
-        token: clientToken,
-        newUserPermission: userData
-    };
     try {
-        await createUser(dataRaw);
+        await createUser(informations);
     } catch (error) {
         console.error('Error in createUserData:', error);
     } 

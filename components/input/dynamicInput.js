@@ -32,7 +32,7 @@ const DynamicInput = ({ dynamicFields, setDynamicFields, label }) => {
     const updatedFields = dynamicFields.filter((_, i) => i !== index);
     setDynamicFields(updatedFields);
   };
-
+console.log("dynaField:",dynamicFields)
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.header}>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderWidth: 0.8,
     borderRadius: 10,
-    padding: width>=500 ? 10 : 5,
+    padding: width >= 500 ? 10 : 5,
   },
   // Header text style
   header: {

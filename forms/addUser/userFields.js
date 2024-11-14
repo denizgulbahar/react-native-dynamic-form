@@ -24,13 +24,12 @@ const UserFields = ({ informations, handleChange, createDataFunction, dynamicTyp
       />
     )
   
-    // console.log("mock:", informations)
   return (
     <View style={styles.modalContainer}>
       <View style={styles.fieldsContainer}>
         {/* FlatList to render input fields */}
         <FlatList
-          data={(Object.keys(informations)).filter(item => item!==dynamicType)}
+          data={(Object.keys(informations)).filter(item => item !== dynamicType)}
           keyExtractor={(item, index) => `${item}${index}`}
           renderItem={renderItem}
           numColumns={numColumns}
@@ -38,7 +37,7 @@ const UserFields = ({ informations, handleChange, createDataFunction, dynamicTyp
         <DynamicInput
           dynamicFields={informations[dynamicType]}
           setDynamicFields={(value) => handleChange(dynamicType, value)}
-          label="Diğer Özellikler"
+          label="Other Properties"
         />
         {/* Button to add user data */}
         <ButtonOriginal

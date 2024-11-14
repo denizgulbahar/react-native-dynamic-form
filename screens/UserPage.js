@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, FlatList } from 'react-native';
 import CustomModal from '../components/modal/customModal';
 import ButtonOriginal from '../components/buttons/buttonOriginal';
 import  UserOperations  from '../forms/addUser/userOperations';
@@ -19,9 +19,9 @@ const UserScreen = () => {
   const handleOpenModal = () => setModalVisible(true);
   const handleCloseModal = () => setModalVisible(false);
 
-  const handleUserData = () => {
+  const handleUserData = async () => {
     try {
-      const data = listUserData()
+      const data = await listUserData()
       setUserData(data);
     } catch (error) {
       console.error('Error handling user data:', error);
@@ -59,7 +59,6 @@ const UserScreen = () => {
       </View>
     );
   };
-  
   return (
     // ScreenWrapper component wraps the entire screen
     <ScreenWrapper>
@@ -74,7 +73,7 @@ const UserScreen = () => {
           
           {/* FlatList component to display the list of users */}
           <FlatList
-            data={userData} // Array of user data
+            data={userData[0]} // Array of user data
             keyExtractor={(item, index) => `${item}_${index}`} // Unique key for each item
             renderItem={RenderItem} // Function to render each item
             numColumns={width >= 500 ? 2 : 1} // Responsive Column
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     textAlign: 'left',
-    fontSize: width>=500 ? 22 : 18,
+    fontSize: width >= 500 ? 22 : 18,
     padding: 7,
   },
   title: {

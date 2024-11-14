@@ -33,11 +33,10 @@ const UserOperations = ({ userData, setLoading, setModalVisible }) => {
   const handleCreateData = async (informations) => {
     setLoading(true)
     try {
-      // Make an API call to create a new user with the provided information
-      await createUserData({...informations, [dynamicType]: transformedObject});
-
       // Transformation for Dynamic Fields of the User Informations
       const transformedObject = await handleDynamicTransform(informations[dynamicType])
+      // Make an API call to create a new user with the provided information
+      await createUserData({...informations, [dynamicType]: transformedObject});
 
       // User information and show an alert
       showAlert("Kullanıcı Eklendi.")
@@ -80,27 +79,31 @@ const UserOperations = ({ userData, setLoading, setModalVisible }) => {
     return !Object.values(fields).some(value => value === "");
   }
   // Restriction Functions
-  function handleRestrictedCreatedData () {
+  function handleRestrictedCreatedData() {
     if (!areAllFieldsFilled(informations)) {
       showAlert("Lütfen tüm alanları doldurunuz.");
       return false;
     }
-    if(informations.name === informations.password) {
+  
+    if (informations.name && informations.password && informations.name === informations.password) {
       showAlert('İsim ile şifre aynı olamaz');
       return false;
-    } 
-    if(!isValidEmail(informations.email)) {
+    }
+  
+    if (informations.email && !isValidEmail(informations.email)) {
       showAlert('Lütfen geçerli bir email giriniz.');
       return false;
     }
-    if(!isValidPhoneNumber(informations.phone)) {
+  
+    if (informations.phone && !isValidPhoneNumber(informations.phone)) {
       showAlert('Lütfen 11 haneli ve geçerli bir telefon numarası giriniz.');
       return false;
     }
-    // If all conditions ok, user will create
-    handleCreateData(informations)
+  
+    // If all conditions are ok, create the data
+    handleCreateData(informations);
     return true;
-  }
+  }  
 
   useEffect(() => {
     handleInputData();
