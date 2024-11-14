@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, FlatList } from 'react-native';
 import CustomModal from '../components/modal/customModal';
 import ButtonOriginal from '../components/buttons/buttonOriginal';
-import  UserOperations  from '../forms/addUser/userOperations';
+import  UserOperationsContainer  from '../forms/addUser/userOperationsContainer';
 import { ScreenWrapper } from '../components/wrapper/screenWrapper';
 import Loading from '../components/loading/loading';
 import listUserData from '../API/user/get-users'
@@ -18,7 +18,28 @@ const UserScreen = () => {
 
   const handleOpenModal = () => setModalVisible(true);
   const handleCloseModal = () => setModalVisible(false);
-
+  // const mockData = [
+  //   {
+  //   "name":"Berkan Bulut",
+  //   "email": "berkan.bulut@gmail.com",
+  //   "phone": "05065122500",
+  //   "password":"berkan123",
+  //   "others": {
+  //       "city": "Ankara",
+  //       "birthDate":"01.07.1992"
+  //   }
+  //   },
+  //   {
+  //     "name":"Berkans Bulut",
+  //     "email": "berkan.bulut@gmail.com",
+  //     "phone": "05065122500",
+  //     "password":"berkan123",
+  //     "others": {
+  //         "city": "Ankara",
+  //         "birthDate":"01.07.1992"
+  //     }
+  //     }
+  // ]
   const handleUserData = async () => {
     try {
       const data = await listUserData()
@@ -50,15 +71,12 @@ const UserScreen = () => {
       return field;
     };
     return (
-      <View style={styles.itemContainer}>
-        {Object.values(item).map((field, index) => (
-          <Text key={index} style={styles.itemText}>
-            {formatField(field)}
-          </Text>
-        ))}
-      </View>
+      <Text style={styles.itemText}>
+        {`${item} : ${formatField(userData[userData.length - 1][item])}`}
+      </Text>
     );
   };
+  
   return (
     // ScreenWrapper component wraps the entire screen
     <ScreenWrapper>
@@ -70,10 +88,11 @@ const UserScreen = () => {
         <View style={styles.main}>
           {/* Title of the screen */}
           <Text style={styles.title}>User Screen</Text>
-          
           {/* FlatList component to display the list of users */}
+          <Text style={styles.addedUserTitle}>Last Added User</Text>
           <FlatList
-            data={userData[0]} // Array of user data
+            style={styles.itemContainer}
+            data={Object.keys(userData[userData.length - 1])} // Array of added last user data
             keyExtractor={(item, index) => `${item}_${index}`} // Unique key for each item
             renderItem={RenderItem} // Function to render each item
             numColumns={width >= 500 ? 2 : 1} // Responsive Column
@@ -88,7 +107,7 @@ const UserScreen = () => {
           
           {/* Custom modal for user operations */}
           <CustomModal visible={isModalVisible} onClose={handleCloseModal}>
-            <UserOperations 
+            <UserOperationsContainer 
               userData={userData} // Pass user data to the UserOperations component
               setLoading={setLoading} // Function to set loading state
               setModalVisible={setModalVisible} // Function to close the modal
@@ -125,6 +144,11 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: width >= 500 ? 22 : 18,
     padding: 7,
+  },
+  addedUserTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   title: {
     textAlign: 'left',

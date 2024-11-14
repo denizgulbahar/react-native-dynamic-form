@@ -6,7 +6,7 @@ import InputOriginal from '../../components/input/inputOriginal';
 
 const { width } = Dimensions.get('window');
 
-const UserFields = ({ informations, handleChange, createDataFunction, dynamicType }) => {
+const UserFieldsComponent = ({ informations, handleChange, createDataFunction, dynamicType }) => {
   
   // Determine number of columns based on device width
   const numColumns = width >= 500 ? 2 : 1; // Tablet 2 columns, Phone 1 column
@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserFields;
+export default UserFieldsComponent;
 
 

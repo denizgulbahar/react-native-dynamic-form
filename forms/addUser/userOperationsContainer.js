@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import UserFields from './userFields';
+import UserFieldsComponent from './userFieldsComponent';
 import { getInputFields } from '../../utilities/getInputFields';
 import listUserData from '../../API/user/get-users';
 import createUserData from '../../API/user/add-user';
 import showAlert from '../../utilities/showAlert';
 import { handleDynamicTransform } from '../../utilities/handleDynamicTransform';
 
-const UserOperations = ({ userData, setLoading, setModalVisible }) => {
+const UserOperationsContainer = ({ userData, setLoading, setModalVisible }) => {
  
   const [informations, setInformations] = useState({});
   
@@ -115,7 +115,7 @@ const UserOperations = ({ userData, setLoading, setModalVisible }) => {
   }, []);
   
   return (
-    <UserFields
+    <UserFieldsComponent
       informations={informations}
       handleChange={handleChange}
       createDataFunction={handleRestrictedCreatedData}
@@ -124,4 +124,4 @@ const UserOperations = ({ userData, setLoading, setModalVisible }) => {
   );
 };
 
-export default UserOperations;
+export default UserOperationsContainer;
