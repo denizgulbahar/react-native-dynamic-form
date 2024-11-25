@@ -4,71 +4,16 @@ import CustomModal from '../components/modal/customModal';
 import ButtonOriginal from '../components/buttons/buttonOriginal';
 import  UserOperationsContainer  from '../forms/addUser/userOperationsContainer';
 import { ScreenWrapper } from '../components/wrapper/screenWrapper';
-import Loading from '../components/loading/loading';
-import listUserData from '../API/user/get-users'
 import { color } from '../styles/color';
+import withUser from '../utils/hoc/withUser';
+import useModal from '../utils/hooks/useModal';
 
 // Get the width of the device screen
 const width = Dimensions.get('window').width;
 
-const UserScreen = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  // const mockData = [
-  //   {
-  //   "name":"Berkan Bulut",
-  //   "email": "berkan.bulut@gmail.com",
-  //   "phone": "05065122500",
-  //   "password":"berkan123",
-  //   "others": {
-  //       "city": "Ankara",
-  //       "birthDate":"01.07.1992"
-  //   }
-  //   },
-  //   {
-  //     "name":"Berkans Bulut",
-  //     "email": "berkan.bulut@gmail.com",
-  //     "phone": "05065122500",
-  //     "password":"berkan123",
-  //     "others": {
-  //         "city": "Ankara",
-  //         "birthDate":"01.07.1992"
-  //     }
-  //   },
-  //   {
-  //     "name":"Berkansss Bulut",
-  //     "email": "berkan.bulut@gmail.com",
-  //     "phone": "05065122500",
-  //     "password":"berkan123",
-  //     "others": {
-  //         "city": "Ankara",
-  //         "birthDate":"01.07.1992"
-  //     }
-  //   }
-  // ]
-  const [userData, setUserData] = useState([])
-  const [isLoading, setLoading] = useState(false);
+const UserScreen = ({ userData }) => {
 
-  const handleOpenModal = () => setModalVisible(true);
-  const handleCloseModal = () => setModalVisible(false);
-  const handleUserData = async () => {
-    try {
-      const data = await listUserData()
-      setUserData(data);
-    } catch (error) {
-      console.error('Error handling user data:', error);
-    } finally {
-      setLoading(false)
-    }
-  }
-  useEffect(() => {
-    setLoading(true)
-    handleUserData();
-  }, []);
-
-  useEffect(() => {
-    // Clean up function
-    return () => setUserData([]);
-  }, []);
+  const { isModalVisible, handleOpenModal, handleCloseModal } = useModal()
 
   const RenderItem = ({ item }) => {
     // Function to format the field for display
@@ -90,11 +35,6 @@ const UserScreen = () => {
   return (
     // ScreenWrapper component wraps the entire screen
     <ScreenWrapper>
-      {isLoading ? (
-        // Conditional rendering: if isLoading is true, show the Loading component
-        <Loading message="Veri yükleniyor, lütfen bekleyin..." />
-      ) : (
-        // If isLoading is false, show the main content
         <View style={styles.main}>
           {/* Title of the screen */}
           <Text style={styles.title}>User Screen</Text>
@@ -103,7 +43,7 @@ const UserScreen = () => {
           <View style={styles.lastUserContainer}>
             <Text style={styles.lastUserTitle}>Last User Informations</Text>
             <FlatList
-              data={Object.keys(userData[userData.length - 1])} // Array of added last user informations
+              data={(userData.length >= 1) && Object.keys(userData[userData.length - 1])} // Array of added last user informations
               keyExtractor={(item, index) => `${item}_${index}`} // Unique key for each item
               renderItem={RenderItem} // Function to render each item
               numColumns={width >= 500 ? 2 : 1} // Responsive Column
@@ -121,12 +61,10 @@ const UserScreen = () => {
           <CustomModal visible={isModalVisible} onClose={handleCloseModal}>
             <UserOperationsContainer 
               userData={userData} // Pass user data to the UserOperations component
-              setLoading={setLoading} // Function to set loading state
-              setModalVisible={setModalVisible} // Function to close the modal
+              handleCloseModal={handleCloseModal} // Function to close the modal
             />
           </CustomModal>
         </View>
-      )}
     </ScreenWrapper>
   );
   
@@ -170,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserScreen;
+export default withUser(UserScreen);

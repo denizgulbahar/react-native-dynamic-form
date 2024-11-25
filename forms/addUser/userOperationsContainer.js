@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import UserFieldsComponent from './userFieldsComponent';
-import { getInputFields } from '../../utilities/getInputFields';
-import listUserData from '../../API/user/get-users';
-import createUserData from '../../API/user/add-user';
-import showAlert from '../../utilities/showAlert';
-import { handleDynamicTransform } from '../../utilities/handleDynamicTransform';
-
-const UserOperationsContainer = ({ userData, setLoading, setModalVisible }) => {
+import { getInputFields } from '../../utils/getInputFields';
+import showAlert from '../../utils/showAlert';
+import { handleDynamicTransform } from '../../utils/handleDynamicTransform';
+import useApi from '../../utils/hooks/useApi';
+import constants from '../../resources/constants';
+const UserOperationsContainer = ({ userData, handleCloseModal }) => {
  
   const [informations, setInformations] = useState({});
   
   // DynamicType was determined here
   const dynamicType = "others";
-
-  // Fetch user data and fill inputs and informations
+  
+  // Fetch user data and fill inputs and informations 
   const handleInputData = () => {
     try {
       // Create inputdata from user API data
@@ -29,28 +28,30 @@ const UserOperationsContainer = ({ userData, setLoading, setModalVisible }) => {
     } 
   };
 
-  // Handle creating user data
-  const handleCreateData = async (informations) => {
-    setLoading(true)
+  const { callApi, error, loading } = useApi()
+
+  const handleCreateUser = async (informations) => {
     try {
       // Transformation for Dynamic Fields of the User Informations
       const transformedObject = await handleDynamicTransform(informations[dynamicType])
       // Make an API call to create a new user with the provided information
-      await createUserData({...informations, [dynamicType]: transformedObject});
-
+      await callApi({
+        url: `${constants.API_URL_USER}`,
+        method: "POST",
+        body: JSON.stringify({...informations, [dynamicType]: transformedObject})
+    });
+      // Update list of users on the UI 
+      await callApi({
+        url: `${constants.API_URL_USER}`,
+    });
       // User information and show an alert
       showAlert("Kullanıcı Eklendi.")
-
-      // Update list of users on the UI 
-      await listUserData();
     } catch (error) {
       console.error('Error creating user data:', error);
     } finally {
-      setLoading(false)
-      setModalVisible(false) // Close modal after operation completes
+      handleCloseModal() // Close modal after operation completes
     }
   };
-
   // Handle input field changes
   const handleChange = (type, value) => {
     setInformations(prevValue => ({
@@ -101,7 +102,7 @@ const UserOperationsContainer = ({ userData, setLoading, setModalVisible }) => {
     }
   
     // If all conditions are ok, create the data
-    handleCreateData(informations);
+    handleCreateUser(informations);
     return true;
   }  
 
@@ -110,7 +111,7 @@ const UserOperationsContainer = ({ userData, setLoading, setModalVisible }) => {
   }, []);
 
   useEffect(() => {
-    // Clean up function
+    // Clean up State
     return () => setInformations({});
   }, []);
   

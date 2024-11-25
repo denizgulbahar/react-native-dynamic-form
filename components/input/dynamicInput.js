@@ -32,7 +32,7 @@ const DynamicInput = ({ dynamicFields, setDynamicFields, label }) => {
     const updatedFields = dynamicFields.filter((_, i) => i !== index);
     setDynamicFields(updatedFields);
   };
-console.log("dynaField:",dynamicFields)
+// console.log("field:",dynamicFields)
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.header}>
