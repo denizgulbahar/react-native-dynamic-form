@@ -5,7 +5,7 @@ import ButtonOriginal from '../components/buttons/buttonOriginal';
 import  UserOperationsContainer  from '../forms/addUser/userOperationsContainer';
 import { ScreenWrapper } from '../components/wrapper/screenWrapper';
 import { color } from '../styles/color';
-import withUser from '../utils/hoc/withUser';
+import withUserDetails from '../utils/hoc/withUserDetails';
 import useModal from '../utils/hooks/useModal';
 
 // Get the width of the device screen
@@ -43,6 +43,7 @@ const UserScreen = ({ userData }) => {
           <View style={styles.lastUserContainer}>
             <Text style={styles.lastUserTitle}>Last User Informations</Text>
             <FlatList
+              scrollEnabled={false}
               data={(userData.length >= 1) && Object.keys(userData[userData.length - 1])} // Array of added last user informations
               keyExtractor={(item, index) => `${item}_${index}`} // Unique key for each item
               renderItem={RenderItem} // Function to render each item
@@ -108,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withUser(UserScreen);
+export default withUserDetails(UserScreen);

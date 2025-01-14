@@ -3,10 +3,18 @@ import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import ButtonOriginal from '../../components/buttons/buttonOriginal';
 import DynamicInput from '../../components/input/dynamicInput';
 import InputOriginal from '../../components/input/inputOriginal';
+import withUserCreateForm from '../../utils/hoc/withUserCreateForm';
+import handleValidationsCreatedData from '../../utils/validations';
 
 const { width } = Dimensions.get('window');
 
-const UserFieldsComponent = ({ informations, handleChange, createDataFunction, dynamicType }) => {
+const UserFieldsComponent = ({ 
+  informations, 
+  handleChange, 
+  dynamicType, 
+  handleCloseModal,
+  handleCreateUser, // Prop From withUserCreateForm
+}) => {
   
   // Determine number of columns based on device width
   const numColumns = width >= 500 ? 2 : 1; // Tablet 2 columns, Phone 1 column
@@ -29,6 +37,7 @@ const UserFieldsComponent = ({ informations, handleChange, createDataFunction, d
       <View style={styles.fieldsContainer}>
         {/* FlatList to render input fields */}
         <FlatList
+          scrollEnabled={false}
           data={(Object.keys(informations)).filter(item => item !== dynamicType)}
           keyExtractor={(item, index) => `${item}${index}`}
           renderItem={renderItem}
@@ -43,7 +52,7 @@ const UserFieldsComponent = ({ informations, handleChange, createDataFunction, d
         <ButtonOriginal
           buttonStyle={styles.addButton}
           title="Kullanıcı Ekle"
-          onPress={() => createDataFunction(informations)}
+          onPress={() => handleValidationsCreatedData({ handleCreateUser, informations, handleCloseModal, dynamicType })}
         />
       </View>
     </View>
@@ -70,8 +79,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignSelf: 'flex-end',
   },
-});
+}); 
 
-export default UserFieldsComponent;
+export default withUserCreateForm(UserFieldsComponent);
 
 

@@ -4,7 +4,7 @@ import Loading from '../../components/loading/loading';
 import constants from '../../resources/constants';
 import useApi from '../hooks/useApi';
 
-const withUser = (Component) => (props) => {
+const withUserDetails = (Component) => (props) => {
     const [userData, setUserData] = useState([])
     const { callApi, loading, error } = useApi();
   
@@ -42,4 +42,4 @@ const withUser = (Component) => (props) => {
     return <Component {...props} userData={userData} />;
 };
 
-export default withUser;
+export default withUserDetails;
